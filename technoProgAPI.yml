@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: TechnoProg
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: http://localhost:181
+paths:
+  /api/phone_book:
+    get:
+      description: index
+      operationId: index
+      responses:
+        '200':
+          description: 'Список номеров'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneBooks'
+    post:
+      summary: create
+      description: create
+      operationId: create
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                is_favorites:
+                  type: integer
+                  example: 1
+                name:
+                  type: string
+                  example: 'Joe D'
+                phone:
+                  type: integer
+                  example: '79001234567'
+      responses:
+        '200':
+          description: 'Создание номера'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneBook'
+  /api/phone_book/{id}:
+    get:
+      summary: Получение параметров номера
+      description: show
+      operationId: show
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID номера
+          schema:
+            type: integer     
+            example: 8    
+      responses:
+        '200':
+          description: 'Создание номера'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneBook'
+    put:
+      summary: Сохранение параметров номера
+      description: update
+      operationId: update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID номера
+          schema:
+            type: integer     
+            example: 8     
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_favorites:
+                  type: number
+                  example: 1
+                name:
+                  type: string
+                  example: Joe Dd
+                phone:
+                  type: number
+                  example: 89001234561
+            examples:
+              update:
+                value:
+                  is_favorites: 1
+                  name: Joe Dd
+                  phone: 89001234561
+      responses:
+        '200':
+          description: 'Создание номера'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneBook'
+    delete:
+      summary: delete
+      description: delete
+      operationId: delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID номера
+          schema:
+            type: integer     
+            example: 8   
+      responses:
+        '200':
+          description: ''
+  /api/phone_book/{id}/set_favorite:
+    patch:
+      summary: set favorite
+      description: set favorite
+      operationId: setFavorite
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: ID номера
+          schema:
+            type: integer     
+            example: 8   
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: 'Добавить в избранное'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneBook'
+components:
+  schemas:
+    PhoneBook:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        is_favorites:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: 'Joe Dd'
+        phone:
+          type: number
+          example: 89001234561
+        user_id:
+          readOnly: true
+          type: number
+          example: 1
+    PhoneBooks:
+      type: array
+      items:
+        $ref: '#/components/schemas/PhoneBook'
+
+tags: []
